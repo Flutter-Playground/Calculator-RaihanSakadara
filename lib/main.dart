@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
+import 'package:icon/icon.dart';
+import './Home_screen.dart';
+import './challenge5.dart';
+import 'package:english_words/english_words.dart';
 
 void main() {
   runApp(kalkulator());
@@ -8,7 +12,6 @@ void main() {
 
 class kalkulator extends StatelessWidget {
   const kalkulator({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,78 +30,79 @@ class demo extends StatefulWidget {
 }
 
 class _demo extends State<demo> {
-  String equation = "0";
-  String result = "0";
-  String expression = "";
-  double equationFontSize = 38.0;
-  double resultFontSize = 48.0;
+  final padding = EdgeInsets.symmetric(horizontal: 20);
 
-  buttonPressed(String buttonText) {
-    setState(() {
-      if (buttonText == "C") {
-        result = "";
-        equation = "0";
-        equationFontSize = 38.0;
-        resultFontSize = 48.0;
-      } else if (buttonText == "⌫") {
-        equationFontSize = 48.0;
-        resultFontSize = 38.0;
-        equation = equation.substring(0, equation.length - 1);
-        if (equation == "") {
-          equation = "0";
-        }
-      } else if (buttonText == "=") {
-        equationFontSize = 38.0;
-        resultFontSize = 48.0;
+  // String equation = "0";
+  // String result = "0";
+  // String expression = "";
+  // double equationFontSize = 38.0;
+  // double resultFontSize = 48.0;
 
-        expression = equation;
-        expression = expression.replaceAll('×', '*');
-        expression = expression.replaceAll('÷', '/');
-        expression = expression.replaceAll('%', '/100');
+  // buttonPressed(String buttonText) {
+  //   setState(() {
+  //     if (buttonText == "C") {
+  //       result = "";
+  //       equation = "0";
+  //       equationFontSize = 38.0;
+  //       resultFontSize = 48.0;
+  //     } else if (buttonText == "⌫") {
+  //       equationFontSize = 48.0;
+  //       resultFontSize = 38.0;
+  //       equation = equation.substring(0, equation.length - 1);
+  //       if (equation == "") {
+  //         equation = "0";
+  //       }
+  //     } else if (buttonText == "=") {
+  //       equationFontSize = 38.0;
+  //       resultFontSize = 48.0;
 
-        try {
-          Parser p = Parser();
-          Expression exp = p.parse(expression);
+  //       expression = equation;
+  //       expression = expression.replaceAll('×', '*');
+  //       expression = expression.replaceAll('÷', '/');
+  //       expression = expression.replaceAll('%', '/100');
+  //       try {
+  //         Parser p = Parser();
+  //         Expression exp = p.parse(expression);
 
-          ContextModel cm = ContextModel();
-          result = '${exp.evaluate(EvaluationType.REAL, cm)}';
-        } catch (e) {
-          result = "Error";
-        }
-      } else {
-        equationFontSize = 48.0;
-        resultFontSize = 38.0;
-        if (equation == "0") {
-          equation = buttonText;
-        } else {
-          equation = equation + buttonText;
-        }
-      }
-    });
-  }
+  //         ContextModel cm = ContextModel();
+  //         result = '${exp.evaluate(EvaluationType.REAL, cm)}';
+  //       } catch (e) {
+  //         result = "Error";
+  //       }
+  //     } else {
+  //       equationFontSize = 48.0;
+  //       resultFontSize = 38.0;
+  //       if (equation == "0") {
+  //         equation = buttonText;
+  //       } else {
+  //         equation = equation + buttonText;
+  //       }
+  //     }
+  //   });
+  // }
 
-  Widget buildButton(
-      String buttonText, double buttonHeight, Color buttonColor) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.1 * buttonHeight,
-      color: buttonColor,
-      child: FlatButton(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0.0),
-            side: BorderSide(
-                color: Colors.white, width: 1, style: BorderStyle.solid)),
-        padding: EdgeInsets.all(16.0),
-        onPressed: () => buttonPressed(buttonText),
-        child: Text(
-          buttonText,
-          style: TextStyle(
-              fontSize: 30.0,
-              fontWeight: FontWeight.normal,
-              color: Colors.white),
-        ),
-      ),
-    );
-  }
+  // Widget buildButton(
+  //     String buttonText, double buttonHeight, Color buttonColor) {
+  //   return Container(
+  //     height: MediaQuery.of(context).size.height * 0.1 * buttonHeight,
+  //     color: buttonColor,
+  //     child: FlatButton(
+  //       shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(0.0),
+  //           side: BorderSide(
+  //               color: Colors.white, width: 1, style: BorderStyle.solid)),
+  //       padding: EdgeInsets.all(16.0),
+  //       onPressed: () => buttonPressed(buttonText),
+  //       child: Text(
+  //         buttonText,
+  //         style: TextStyle(
+  //             fontSize: 30.0,
+  //             fontWeight: FontWeight.normal,
+  //             color: Colors.white),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +115,7 @@ class _demo extends State<demo> {
         colorTransitionScaffold: Colors.black54, // default Color.black54
 
         //When setting the vertical offset, be sure to use only top or bottom
-        offset: IDOffset.only(bottom: 0.00, right: 0.00, left: 0.00),
+        offset: IDOffset.only(bottom: 0.00, right: 0.00, left: 0.20),
         scale: IDOffset.horizontal(1), // set the offset in both directions
 
         proportionalChildArea: true, // default true // default 0
@@ -132,19 +136,73 @@ class _demo extends State<demo> {
             print(a), // return  true (open) or false (close)
 
         leftChild: Material(
-          child: Container(
-            color: Colors.blueAccent,
-            child: ListView(
-              children: <Widget>[
-                const SizedBox(height: 20),
-                ListTile(
-                  title: Text(
-                    "Kalkulator",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                color: Theme.of(context).primaryColor,
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: 100,
+                        height: 100,
+                        margin: EdgeInsets.only(
+                          top: 30,
+                          bottom: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://ngonoo.com/engine/wp-content/uploads/2015/02/shutterstock_179216297.jpg'),
+                              fit: BoxFit.fill),
+                        ),
+                      ),
+                      Text(
+                        'Raihan Sakadara',
+                        style: TextStyle(fontSize: 22, color: Colors.white),
+                      ),
+                      Text(
+                        'sakadararaihan@gmail.com',
+                        style: TextStyle(fontSize: 11, color: Colors.white),
+                      ),
+                    ],
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.calculate_outlined),
+                title: Text(
+                  'Kalkulator',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const homescreen()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.navigate_next),
+                title: Text(
+                  'Challenge 5',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const challenge5()),
+                  );
+                },
+              ),
+            ],
           ),
         ),
 
@@ -155,88 +213,97 @@ class _demo extends State<demo> {
         // Note: use "automaticallyImplyLeading: false" if you do not personalize "leading" of Bar
 
         scaffold: Scaffold(
+          backgroundColor: Colors.blueGrey,
           appBar: AppBar(
-              title: Text("Kalkulator"), automaticallyImplyLeading: true),
-          body: Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.centerRight,
-                padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
-                child: Text(
-                  equation,
-                  style: TextStyle(fontSize: equationFontSize),
-                ),
-              ),
-              Container(
-                alignment: Alignment.centerRight,
-                padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
-                child: Text(
-                  result,
-                  style: TextStyle(fontSize: resultFontSize),
-                ),
-              ),
-              Expanded(child: Divider()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * .70,
-                    child: Table(
-                      children: [
-                        TableRow(children: [
-                          buildButton("C", 1, Colors.grey),
-                          buildButton("⌫", 1, Colors.grey),
-                          buildButton("÷", 1, Colors.grey),
-                        ]),
-                        TableRow(children: [
-                          buildButton("7", 1, Colors.blueGrey),
-                          buildButton("8", 1, Colors.blueGrey),
-                          buildButton("9", 1, Colors.blueGrey),
-                        ]),
-                        TableRow(children: [
-                          buildButton("4", 1, Colors.blueGrey),
-                          buildButton("5", 1, Colors.blueGrey),
-                          buildButton("6", 1, Colors.blueGrey),
-                        ]),
-                        TableRow(children: [
-                          buildButton("1", 1, Colors.blueGrey),
-                          buildButton("2", 1, Colors.blueGrey),
-                          buildButton("3", 1, Colors.blueGrey)
-                        ]),
-                        TableRow(children: [
-                          buildButton(".", 1, Colors.blueGrey),
-                          buildButton("0", 1, Colors.blueGrey),
-                          buildButton("00", 1, Colors.blueGrey),
-                        ]),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.30,
-                    child: Table(
-                      children: [
-                        TableRow(children: [
-                          buildButton("×", 1, Colors.grey),
-                        ]),
-                        TableRow(children: [
-                          buildButton("-", 1, Colors.grey),
-                        ]),
-                        TableRow(children: [
-                          buildButton("+", 1, Colors.grey),
-                        ]),
-                        TableRow(children: [
-                          buildButton("%", 1, Colors.grey),
-                        ]),
-                        TableRow(children: [
-                          buildButton("=", 1, Colors.orangeAccent),
-                        ]),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ],
+              title: Text("Home Screen"), automaticallyImplyLeading: false),
+          body: const Center(
+            child: Text('Hello Raihan',
+                style: TextStyle(
+                  fontSize: 40,
+                )),
           ),
+          // body: Column(
+          //   children: <Widget>[
+          //     Container(
+          //       alignment: Alignment.centerRight,
+          //       padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+          //       child: Text(
+          //         equation,
+          //         style: TextStyle(
+          //             color: Colors.white, fontSize: equationFontSize),
+          //       ),
+          //     ),
+          //     Container(
+          //       alignment: Alignment.centerRight,
+          //       padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
+          //       child: Text(
+          //         result,
+          //         style:
+          //             TextStyle(color: Colors.white, fontSize: resultFontSize),
+          //       ),
+          //     ),
+          //     Expanded(child: Divider()),
+          //     Row(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: [
+          //         Container(
+          //           width: MediaQuery.of(context).size.width * .70,
+          //           child: Table(
+          //             children: [
+          //               TableRow(children: [
+          //                 buildButton("C", 1, Colors.orangeAccent),
+          //                 buildButton("⌫", 1, Colors.grey),
+          //                 buildButton("÷", 1, Colors.grey),
+          //               ]),
+          //               TableRow(children: [
+          //                 buildButton("7", 1, Colors.blueGrey),
+          //                 buildButton("8", 1, Colors.blueGrey),
+          //                 buildButton("9", 1, Colors.blueGrey),
+          //               ]),
+          //               TableRow(children: [
+          //                 buildButton("4", 1, Colors.blueGrey),
+          //                 buildButton("5", 1, Colors.blueGrey),
+          //                 buildButton("6", 1, Colors.blueGrey),
+          //               ]),
+          //               TableRow(children: [
+          //                 buildButton("1", 1, Colors.blueGrey),
+          //                 buildButton("2", 1, Colors.blueGrey),
+          //                 buildButton("3", 1, Colors.blueGrey)
+          //               ]),
+          //               TableRow(children: [
+          //                 buildButton(".", 1, Colors.blueGrey),
+          //                 buildButton("0", 1, Colors.blueGrey),
+          //                 buildButton("00", 1, Colors.blueGrey),
+          //               ]),
+          //             ],
+          //           ),
+          //         ),
+          //         Container(
+          //           width: MediaQuery.of(context).size.width * 0.30,
+          //           child: Table(
+          //             children: [
+          //               TableRow(children: [
+          //                 buildButton("×", 1, Colors.grey),
+          //               ]),
+          //               TableRow(children: [
+          //                 buildButton("-", 1, Colors.grey),
+          //               ]),
+          //               TableRow(children: [
+          //                 buildButton("+", 1, Colors.grey),
+          //               ]),
+          //               TableRow(children: [
+          //                 buildButton("%", 1, Colors.grey),
+          //               ]),
+          //               TableRow(children: [
+          //                 buildButton("=", 1, Colors.orangeAccent),
+          //               ]),
+          //             ],
+          //           ),
+          //         )
+          //       ],
+          //     ),
+          //   ],
+          // ),
           /* OR
             CupertinoPageScaffold(                
                 navigationBar: CupertinoNavigationBar(
